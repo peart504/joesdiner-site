@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joe's Diner — A Diner Since Never</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Special+Elite&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EFE3C8;
+    --paper-dark: #E4D5AF;
+    --ink: #241F18;
+    --red: #A6333B;
+    --red-dark: #7C2129;
+    --teal: #2E7D6B;
+    --mustard: #D9A441;
+    --pink: #E8577A;
+    --chrome: #C9C2B4;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Special Elite', 'Courier New', monospace;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    * { animation: none !important; transition: none !important; }
+  }
+
+  a { color: var(--red-dark); }
+
+  .checker{
+    height: 14px;
+    background-image:
+      linear-gradient(45deg, var(--ink) 25%, transparent 25%, transparent 75%, var(--ink) 75%),
+      linear-gradient(45deg, var(--ink) 25%, transparent 25%, transparent 75%, var(--ink) 75%);
+    background-size: 14px 14px;
+    background-position: 0 0, 7px 7px;
+    background-color: var(--paper);
+    opacity: 0.85;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: radial-gradient(ellipse at 50% 30%, #2b2521 0%, #17130f 70%);
+    color: var(--paper);
+    text-align:center;
+    padding: 70px 20px 60px;
+    position: relative;
+    overflow:hidden;
+  }
+
+  .sign{
+    font-family: 'Monoton', cursive;
+    font-size: clamp(2.4rem, 8vw, 5rem);
+    letter-spacing: 0.03em;
+    color: var(--paper);
+    text-shadow:
+      0 0 6px var(--pink),
+      0 0 16px var(--pink),
+      0 0 34px var(--teal),
+      0 0 2px #fff;
+    cursor: pointer;
+    user-select: none;
+    animation: flicker 4.2s infinite;
+    margin: 0;
+  }
+
+  .sign:active { transform: translateY(1px); }
+
+  @keyframes flicker{
+    0%, 3%, 6%, 100% { opacity: 1; }
+    4% { opacity: 0.4; }
+    5% { opacity: 0.85; }
+    52% { opacity: 1; }
+    53% { opacity: 0.55; }
+    54% { opacity: 1; }
+  }
+
+  .hero-sub{
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--mustard);
+    margin-top: 6px;
+    min-height: 1.6em;
+  }
+
+  .hero-tagline{
+    max-width: 480px;
+    margin: 26px auto 0;
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+
+  .hero-hint{
+    font-size: 0.75rem;
+    opacity: 0.45;
+    margin-top: 30px;
+  }
+
+  /* ---------- TICKET SECTIONS ---------- */
+  section{
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 50px 24px;
+    position: relative;
+  }
+
+  .ticket-edge{
+    height: 18px;
+    background: repeating-linear-gradient(90deg, var(--paper) 0 10px, transparent 10px 20px);
+    border-top: 2px dashed var(--ink);
+    opacity: 0.35;
+  }
+
+  h2{
+    font-family: 'Caveat', cursive;
+    font-size: 2.4rem;
+    color: var(--red-dark);
+    margin: 0 0 6px;
+  }
+
+  .eyebrow{
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 4px;
+  }
+
+  /* ---------- SPECIAL GENERATOR ---------- */
+  .special-card{
+    background: var(--paper-dark);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 24px;
+    text-align:center;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  #special-text{
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+    min-height: 3.2em;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 0 8px;
+  }
+
+  button{
+    font-family: 'Special Elite', monospace;
+    background: var(--red);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 0.08s ease;
+  }
+  button:hover { background: var(--red-dark); }
+  button:active { transform: translate(3px, 3px); box-shadow: none; }
+  button:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+  /* ---------- MENU ---------- */
+  .menu-cat{ margin-bottom: 28px; }
+  .menu-cat h3{
+    font-family: 'Special Elite', monospace;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    border-bottom: 2px solid var(--chrome);
+    padding-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .menu-item{
+    display:flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dotted var(--chrome);
+  }
+  .menu-item .name{ font-weight:bold; }
+  .menu-item .desc{
+    display:block;
+    font-size: 0.82rem;
+    opacity: 0.75;
+    font-weight: normal;
+  }
+  .menu-item .price{
+    white-space: nowrap;
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--red-dark);
+  }
+
+  /* ---------- REVIEWS ---------- */
+  .reviews{
+    display: grid;
+    gap: 16px;
+  }
+  .review{
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    position: relative;
+    transform: rotate(var(--rot,-1deg));
+  }
+  .review:nth-child(2){ --rot: 1deg; }
+  .review:nth-child(3){ --rot: -0.6deg; }
+  .review .stars{ color: var(--mustard); letter-spacing: 2px; }
+
+  /* ---------- HOURS ---------- */
+  .hours-sign{
+    background: var(--ink);
+    color: var(--paper);
+    padding: 22px 24px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  .hours-row{
+    display:flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dotted var(--chrome);
+  }
+  .hours-row:last-child{ border-bottom:none; }
+
+  /* ---------- SECRET ---------- */
+  #secret{
+    display:none;
+    margin-top: 18px;
+    background: var(--teal);
+    color: var(--paper);
+    padding: 16px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+  }
+  #secret.show{ display:block; animation: pop 0.3s ease; }
+  @keyframes pop{ from{ transform: scale(0.9); opacity:0; } to{ transform: scale(1); opacity:1; } }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    text-align:center;
+    padding: 40px 20px 60px;
+    font-size: 0.78rem;
+    opacity: 0.7;
+  }
+  .counter{
+    display:inline-flex;
+    gap: 3px;
+    margin: 14px 0;
+    font-family: 'Courier New', monospace;
+  }
+  .counter span{
+    background: var(--ink);
+    color: #7CFC9A;
+    padding: 3px 6px;
+    border-radius: 2px;
+    font-size: 0.9rem;
+  }
+  .guestbook{
+    max-width: 420px;
+    margin: 20px auto 0;
+    border: 1px dashed var(--chrome);
+    padding: 14px;
+    text-align:left;
+    border-radius: 4px;
+  }
+  .guestbook .entry{ font-size: 0.78rem; margin-bottom: 6px; }
+  .guestbook input{
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px;
+    font-family: 'Special Elite', monospace;
+    border: 1px solid var(--chrome);
+    border-radius: 3px;
+    background: var(--paper-dark);
+    color: var(--ink);
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1 class="sign" id="signBtn" title="click me">JOE'S DINER</h1>
+  <div class="hero-sub" id="signSub">est. never</div>
+  <p class="hero-tagline">You've reached joesdiner.com. There is no diner. There never was. There is, however, a fully realized menu, three suspiciously specific reviews, and a jukebox that only plays in your imagination.</p>
+  <p class="hero-hint">(the sign likes to be clicked)</p>
+</div>
+
+<div class="checker"></div>
+
+<section>
+  <div class="eyebrow">Today's Special</div>
+  <h2>Spin the pass</h2>
+  <div class="special-card">
+    <div id="special-text">Reluctant Meatloaf, served with a side of regret — $4.20</div>
+    <button id="spinBtn">Spin for today's special</button>
+  </div>
+</section>
+
+<div class="ticket-edge"></div>
+
+<section>
+  <div class="eyebrow">The Menu</div>
+  <h2>Order at your own risk</h2>
+
+  <div class="menu-cat">
+    <h3>Breakfast — served never</h3>
+    <div class="menu-item">
+      <span><span class="name">Eggs Schrödinger</span><span class="desc">Two eggs, simultaneously poached and not, until you cut into them</span></span>
+      <span class="price">$6</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">The Existential Omelet</span><span class="desc">Comes with everything. Means nothing.</span></span>
+      <span class="price">$7</span>
+    </div>
+  </div>
+
+  <div class="menu-cat">
+    <h3>Lunch</h3>
+    <div class="menu-item">
+      <span><span class="name">Grilled Cheese of Theseus</span><span class="desc">We replace one ingredient at a time. By the last bite it's a different sandwich.</span></span>
+      <span class="price">$5.50</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">Soup of the Day</span><span class="desc">Day undisclosed. Soup also undisclosed.</span></span>
+      <span class="price">$4</span>
+    </div>
+  </div>
+
+  <div class="menu-cat">
+    <h3>Pie</h3>
+    <div class="menu-item">
+      <span><span class="name">Pi(e) à la Mode</span><span class="desc">Exactly 3.14159 inches across. We checked.</span></span>
+      <span class="price">$3.14</span>
+    </div>
+  </div>
+
+  <div class="menu-cat">
+    <h3>Drinks</h3>
+    <div class="menu-item">
+      <span><span class="name">Bottomless Coffee</span><span class="desc">Citation needed</span></span>
+      <span class="price">$2</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">Regular Water</span><span class="desc">No notes</span></span>
+      <span class="price">Free</span>
+    </div>
+  </div>
+</section>
+
+<div class="ticket-edge"></div>
+
+<section>
+  <div class="eyebrow">Word on the Street</div>
+  <h2>What people are saying</h2>
+  <div class="reviews">
+    <div class="review"><span class="stars">★★★★★</span><br>"Never been, would recommend."</div>
+    <div class="review"><span class="stars">★★★★</span><br>"Tried to make a reservation. Line disconnected. Mysterious, but four stars."</div>
+    <div class="review"><span class="stars">★★★★★</span><br>"The vibes were immaculate. The diner, less so, on account of not existing."</div>
+  </div>
+</section>
+
+<div class="ticket-edge"></div>
+
+<section>
+  <div class="eyebrow">Hours</div>
+  <h2>When we're "open"</h2>
+  <div class="hours-sign">
+    <div class="hours-row"><span>Mon–Fri</span><span>Whenever</span></div>
+    <div class="hours-row"><span>Saturday</span><span>Also whenever</span></div>
+    <div class="hours-row"><span>Sunday</span><span>Definitely whenever</span></div>
+    <div class="hours-row"><span>Closed</span><span>Thanksgiving, existentially</span></div>
+  </div>
+  <div id="secret">
+    <strong>SECRET MENU UNLOCKED:</strong> The Joe. Ask for it by name and you will be handed nothing, because there is no Joe. This is the whole bit.
+  </div>
+</section>
+
+<footer>
+  <div class="checker" style="margin-bottom:24px;"></div>
+  <div>You are visitor number</div>
+  <div class="counter" id="counter"></div>
+  <div class="guestbook">
+    <div class="entry">— "First!" — Anonymous, 1998</div>
+    <div class="entry">— "Is this real" — Anonymous, just now</div>
+    <input type="text" placeholder="Guestbook is decorative. Your kind words go into the void, which appreciates it." disabled>
+  </div>
+  <p style="margin-top:26px;">joesdiner.com — a domain in search of a business plan since some time ago.</p>
+</footer>
+
+<script>
+  // ---- Today's Special generator ----
+  const adjectives = ["Reluctant","Suspicious","Ambitious","Melancholy","Overconfident","Unlicensed","Theoretical","Day-Old","Off-Brand","Existential","Haunted","Deeply Average"];
+  const nouns = ["Meatloaf","Tuna Melt","Pancake Stack","Casserole","Club Sandwich","Chili","Pot Roast","Waffle","Hash","Patty Melt"];
+  const notes = ["served with a side of regret","comes with unsolicited advice","no substitutions, no explanations","garnished with quiet judgment","exact origin unknown","chef's mood pending"];
+
+  function randomItem(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+  document.getElementById('spinBtn').addEventListener('click', () => {
+    const price = (Math.random()*9 + 2).toFixed(2);
+    const text = `${randomItem(adjectives)} ${randomItem(nouns)}, ${randomItem(notes)} — $${price}`;
+    document.getElementById('special-text').textContent = text;
+  });
+
+  // ---- Neon sign easter egg ----
+  let clicks = 0;
+  const subLines = ["est. never", "a diner since some time ago", "keep clicking, see what happens"];
+  document.getElementById('signBtn').addEventListener('click', () => {
+    clicks++;
+    if (clicks < 5) {
+      document.getElementById('signSub').textContent = randomItem(subLines);
+    } else {
+      document.getElementById('secret').classList.add('show');
+      document.getElementById('signSub').textContent = "you found it";
+    }
+  });
+
+  // ---- Fake visitor counter ----
+  const counterEl = document.getElementById('counter');
+  const finalCount = String(Math.floor(Math.random()*90000 + 10000));
+  counterEl.innerHTML = finalCount.split('').map(d => `<span>${d}</span>`).join('');
+</script>
+
+</body>
+</html>
