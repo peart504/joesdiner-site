@@ -253,6 +253,56 @@
   #secret.show{ display:block; animation: pop 0.3s ease; }
   @keyframes pop{ from{ transform: scale(0.9); opacity:0; } to{ transform: scale(1); opacity:1; } }
 
+  /* ---------- ORDER TRACKER ---------- */
+  .tracker-card{
+    background: var(--paper-dark);
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 24px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .tracker-input-row{
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .tracker-input-row input{
+    flex: 1;
+    min-width: 160px;
+    font-family: 'Special Elite', monospace;
+    padding: 10px 12px;
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .tracker-input-row input:focus-visible{ outline: 3px solid var(--teal); outline-offset: 2px; }
+  .tracker-steps{
+    margin-top: 18px;
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .tracker-step{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    font-size: 0.85rem;
+    opacity:0;
+    animation: stepIn 0.4s ease forwards;
+  }
+  @keyframes stepIn{ from{ opacity:0; transform: translateY(4px);} to{ opacity:1; transform: translateY(0);} }
+  .tracker-step .dot{
+    flex-shrink:0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--teal);
+    margin-top: 4px;
+  }
+  .tracker-step.final .dot{ background: var(--red); }
+  .tracker-step.final{ font-weight:bold; }
+
   /* ---------- FOOTER ---------- */
   footer{
     text-align:center;
@@ -331,6 +381,18 @@
       <span><span class="name">The Existential Omelet</span><span class="desc">Comes with everything. Means nothing.</span></span>
       <span class="price">$7</span>
     </div>
+    <div class="menu-item">
+      <span><span class="name">Pancakes, Theoretically</span><span class="desc">A stack of three. Circularity not guaranteed.</span></span>
+      <span class="price">$5.75</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">Bacon of Unknown Origin</span><span class="desc">We have questions too. We're not asking them.</span></span>
+      <span class="price">$4.50</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">Toast, Unbuttered, Unapologetic</span><span class="desc">A statement piece, not a side.</span></span>
+      <span class="price">$2.50</span>
+    </div>
   </div>
 
   <div class="menu-cat">
@@ -343,6 +405,18 @@
       <span><span class="name">Soup of the Day</span><span class="desc">Day undisclosed. Soup also undisclosed.</span></span>
       <span class="price">$4</span>
     </div>
+    <div class="menu-item">
+      <span><span class="name">The Club Sandwich, Reluctantly</span><span class="desc">Three tiers of commitment issues, held together by toothpicks.</span></span>
+      <span class="price">$8</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">Meatloaf, No Further Comment</span><span class="desc">The kitchen has said everything it's going to say about this.</span></span>
+      <span class="price">$9</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">The Sysadmin's Chili</span><span class="desc">Left simmering overnight. Nobody remembers starting it.</span></span>
+      <span class="price">$6.50</span>
+    </div>
   </div>
 
   <div class="menu-cat">
@@ -350,6 +424,14 @@
     <div class="menu-item">
       <span><span class="name">Pi(e) à la Mode</span><span class="desc">Exactly 3.14159 inches across. We checked.</span></span>
       <span class="price">$3.14</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">Whatever's Left From Yesterday</span><span class="desc">Ask what flavor. Watch us hesitate.</span></span>
+      <span class="price">$3</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">The Concept of Pie</span><span class="desc">A slice-shaped absence on a plate. Deeply satisfying.</span></span>
+      <span class="price">$0</span>
     </div>
   </div>
 
@@ -362,6 +444,14 @@
     <div class="menu-item">
       <span><span class="name">Regular Water</span><span class="desc">No notes</span></span>
       <span class="price">Free</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">Milkshake, Structurally Sound</span><span class="desc">Stands a straw up on its own. We're proud of that.</span></span>
+      <span class="price">$5</span>
+    </div>
+    <div class="menu-item">
+      <span><span class="name">Iced Tea, Unsweetened, No Apologies</span><span class="desc">Sweetener packets sold separately, at a markup.</span></span>
+      <span class="price">$2.50</span>
     </div>
   </div>
 </section>
@@ -391,6 +481,20 @@
   </div>
   <div id="secret">
     <strong>SECRET MENU UNLOCKED:</strong> The Joe. Ask for it by name and you will be handed nothing, because there is no Joe. This is the whole bit.
+  </div>
+</section>
+
+<div class="ticket-edge"></div>
+
+<section>
+  <div class="eyebrow">Order Status</div>
+  <h2>Track your order</h2>
+  <div class="tracker-card">
+    <div class="tracker-input-row">
+      <input type="text" id="orderInput" placeholder="Enter any order number" maxlength="14">
+      <button id="trackBtn">Track order</button>
+    </div>
+    <div id="trackerSteps" class="tracker-steps"></div>
   </div>
 </section>
 
@@ -437,6 +541,75 @@
   const counterEl = document.getElementById('counter');
   const finalCount = String(Math.floor(Math.random()*90000 + 10000));
   counterEl.innerHTML = finalCount.split('').map(d => `<span>${d}</span>`).join('');
+
+  // ---- Order tracker ----
+  const trackerOpeners = [
+    `Order received.`,
+    `Order received. We're as surprised as you are.`,
+    `Order logged. A cook has been alerted, technically.`,
+    `Order confirmed. Confirmation is the only part of this we're sure about.`
+  ];
+  const trackerMiddles = [
+    `Kitchen is discussing your order philosophically.`,
+    `A cook has been notified. The cook is unmoved.`,
+    `Your order has entered a liminal space.`,
+    `Order forwarded to a manager who no longer works here.`,
+    `Your ticket has been laminated for posterity.`,
+    `The griddle has been informed. The griddle remains skeptical.`,
+    `Your order is under review by a committee of one.`,
+    `Someone in the back said soon. We wrote it down.`,
+    `Your order has been added to a list. The list is theoretical.`,
+    `A bell was rung. Nothing happened.`,
+    `Status pending a decision that will not be made.`,
+    `Your order has been cross-referenced with several other orders that also do not exist.`,
+    `The fryer has opinions about your order. It's keeping them to itself.`,
+    `Your order's current location is best described as elsewhere.`
+  ];
+  const trackerFinals = [
+    `Your order will arrive when it's ready. It is never ready.`,
+    `Your order has achieved a kind of permanent, unresolved potential.`,
+    `This is as far as the tracking goes. We're sorry, and also not sorry.`,
+    `Your order has become a philosophical position rather than a meal.`
+  ];
+
+  const trackBtn = document.getElementById('trackBtn');
+  const trackerSteps = document.getElementById('trackerSteps');
+  const orderInput = document.getElementById('orderInput');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  async function runTracker(){
+    trackBtn.disabled = true;
+    trackerSteps.innerHTML = '';
+    const orderNum = orderInput.value.trim() || `#${Math.floor(Math.random()*9000+1000)}`;
+    const middleCount = 3 + Math.floor(Math.random() * 3); // 3–5 middle steps
+    const sequence = [
+      randomItem(trackerOpeners),
+      ...shuffle(trackerMiddles).slice(0, middleCount),
+      randomItem(trackerFinals)
+    ];
+    for (let i = 0; i < sequence.length; i++){
+      const div = document.createElement('div');
+      div.className = 'tracker-step' + (i === sequence.length - 1 ? ' final' : '');
+      div.innerHTML = `<span class="dot"></span><span>${i === 0 ? `Order ${orderNum}: ` : ''}${sequence[i]}</span>`;
+      trackerSteps.appendChild(div);
+      if (!reduceMotion) await sleep(700);
+    }
+    trackBtn.disabled = false;
+    trackBtn.textContent = 'Track another order';
+  }
+
+  trackBtn.addEventListener('click', runTracker);
 </script>
 
 </body>
